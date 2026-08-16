@@ -1,6 +1,6 @@
 # About
 
-A tool for stress-testing inclusivity of designs against commonly overlooked scenarios. [Read more about it here](https://www.jackbush.github.io/inclusive-design-scenarios/about/).
+A tool for stress-testing inclusivity of designs against commonly overlooked scenarios. [Read more about it here](https://www.jackbush.github.io/zola/about/).
 
 # Contributing
 
@@ -8,11 +8,11 @@ This project needs a breadth of lived experience. Want this to be as easy as pos
 
 ### Non-technical contributions
 
-Trying to make creative use of the [Issues Tracker](https://github.com/jackbush/inclusive-design-scenarios/issues) so people can contribute content improvements, ideas, feedback and bug reports, and get involved in discussion, without writing code or running anything locally. If you have a GitHub account (free), you can create and post here.
+Trying to make creative use of the [Issues Tracker](https://github.com/jackbush/zola/issues) so people can contribute content improvements, ideas, feedback and bug reports, and get involved in discussion, without writing code or running anything locally. If you have a GitHub account (free), you can create and post here.
 
 ### Technical contributions
 
-Anybody is welcome to [submit a pull request (PR)](https://github.com/jackbush/inclusive-design-scenarios/pulls). Just ask that any PR references an issue and includes a clear description of what it is.
+Anybody is welcome to [submit a pull request (PR)](https://github.com/jackbush/zola/pulls). Just ask that any PR references an issue and includes a clear description of what it is.
 
 # Accessibility
 

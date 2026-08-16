@@ -34,7 +34,7 @@ No test or lint commands exist in this project.
 
 **Styles**: `src/styles/global.scss` (Swiss/bold redesign, mobile-first, `clamp()` typography). `src/styles/normalize.scss` is the CSS reset. Both imported by Layout.
 
-**Deployment**: GitHub Pages at `https://jackbush.github.io/inclusive-design-scenarios/` — `astro.config.mjs` sets `site` and `base`. Always use `import.meta.env.BASE_URL` for internal links (not hardcoded paths).
+**Deployment**: GitHub Pages at `https://jackbush.github.io/zola/` — `astro.config.mjs` sets `site` and `base`. Always use `import.meta.env.BASE_URL` for internal links (not hardcoded paths).
 
 ## Key Conventions
 
