@@ -163,20 +163,17 @@ body {
     margin-bottom: clamp(24px, 4vw, 40px);
 }
 
-.header__title {
-    font-size: clamp(28px, 5vw, 42px);
-    font-weight: 700;
-    line-height: 1.05;
-    margin: 0 0 12px;
-    letter-spacing: -0.01em;
+.header--plain {
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
-.header__lead {
-    font-size: clamp(16px, 2vw, 18px);
-    font-weight: 400;
+.header__title {
+    font-size: clamp(32px, 6vw, 48px);
+    font-weight: 700;
+    line-height: 1.05;
     margin: 0;
-    line-height: 1.45;
-    color: var(--muted);
+    letter-spacing: -0.02em;
 }
 
 /* --- Main --- */
