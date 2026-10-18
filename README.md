@@ -12,12 +12,16 @@ This project needs diversity of experience and everybody is welcome. Use the [Is
 
 Only submit a scenario if it comes from real experience — your own, someone you know, or primary research. That said, scenarios are standardised to the first person.
 
-- **Human, not clinical.** Use common names for conditions. When a clinical term is necessary, explain it immediately rather than assuming familiarity.
-- **Situation first, consequence second.** What is happening to this person, then how it affects their use of technology. The consequence can be implied.
+#### Do
+- **Human, not clinical.** Use common names for conditions. When a clinical term is necessary, explain it, but avoid euphemisms.
+- **Situation first, consequence second.** What is happening to this person, then how it affects their use of technology.
 - **No generalisations.** Concrete detail is vital, it lets the user visualise the situation.
 - **No pity or inspiration narratives.** State conditions and coping strategies neutrally. Don't moralise.
 - **No longer than necessary.** We want these to be memorable, so length should follow complexity.
-- **What to avoid.** Don't state the design lesson explicitly, imply it. Don't use euphemisms. Don't claim emotional states unless they're a specific, functional consequence of the condition.
+
+#### Don't 
+- Don't state the design lesson explicitly, imply it from situation and consequence.
+- Don't claim emotional states unless they're a specific, functional consequence of the condition.
 
 ## Accessibility
 
