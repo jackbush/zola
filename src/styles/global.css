@@ -222,12 +222,11 @@ main {
 .cta {
     width: 100%;
     max-width: var(--container);
-    padding: 16px 24px;
+    height: 44px;
+    padding: 0 24px;
     font-family: var(--font);
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
     cursor: pointer;
     border: 2px solid var(--fg);
     background: var(--fg);
@@ -252,6 +251,24 @@ main {
     }
 }
 
+/* --- Eyebrow --- */
+.eyebrow,
+.content h2 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+}
+
+.eyebrow {
+    margin: 0 0 12px;
+}
+
+.eyebrow--highlight {
+    color: var(--pink);
+}
+
 /* --- About / prose content --- */
 .content {
     & p,
@@ -261,12 +278,7 @@ main {
     }
 
     & h2 {
-        font-size: 13px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
         margin: 40px 0 12px;
-        color: var(--muted);
     }
 
     & ul {

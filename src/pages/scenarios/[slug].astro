@@ -27,7 +27,8 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
       </p>
     </header>
 
-    <article aria-label={scenario.data.title}>
+    <article aria-labelledby="scenario-title">
+      <h2 class="eyebrow eyebrow--highlight" id="scenario-title">{scenario.data.title}</h2>
       <Content />
     </article>
   </main>
