@@ -106,17 +106,19 @@ body {
 }
 
 /* --- Nav --- */
+/* Full-bleed, so iOS Safari fills the status bar area with its background
+   rather than showing the page scrolling behind it. Padding centres the
+   content; the rule under it is drawn only across the content box. */
 .nav {
     position: fixed;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
     z-index: 100;
-    width: calc(100% - 2 * var(--gutter));
-    max-width: var(--container);
     height: var(--nav-height);
-    background: var(--bg);
-    border-bottom: 2px solid var(--fg);
+    padding-inline: max(var(--gutter), (100% - var(--container)) / 2);
+    background: linear-gradient(var(--fg) 0 0) bottom / 100% 2px no-repeat
+        content-box border-box var(--bg);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -266,9 +268,6 @@ main {
 
     .nav {
         position: relative;
-        left: auto;
-        transform: none;
-        margin: 0 auto;
     }
 
     .container {
@@ -289,6 +288,8 @@ main {
     padding: 0 var(--gutter) 24px;
     display: flex;
     justify-content: center;
+    /* A real background, so iOS Safari fills its toolbar area with it */
+    background: var(--bg);
 
     /* Fade out content above button */
     &::before {
@@ -301,17 +302,12 @@ main {
         background: linear-gradient(to bottom, transparent, var(--bg));
         pointer-events: none;
     }
+}
 
-    /* Solid cover below button */
-    &::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 24px;
-        background: var(--bg);
-        pointer-events: none;
+/* Phones: sit flush on the browser's toolbar and give the space to text */
+@media (max-width: 480px) {
+    .cta__wrapper {
+        padding-bottom: 0;
     }
 }
 
@@ -348,6 +344,12 @@ main {
         outline-offset: 3px;
         position: relative;
         z-index: 1;
+
+        /* Flush with the toolbar on phones, so no room below: ring goes inside */
+        @media (max-width: 480px) {
+            outline-color: currentColor;
+            outline-offset: -7px;
+        }
     }
 }
 
@@ -356,8 +358,7 @@ main {
         position: static;
         padding: 32px 0 0;
 
-        &::before,
-        &::after {
+        &::before {
             content: none;
         }
     }
