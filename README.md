@@ -31,7 +31,7 @@ Scenarios are written in first person.
 
 ## Accessibility
 
-We target [WCAG 2.2 AAA](https://www.w3.org/TR/WCAG22/) but it hasn't been widely tested. If you spot anything falling short, please report an issue and/or PR.
+We target [WCAG 2.2 AAA](https://www.w3.org/TR/WCAG22/) but it hasn't been widely tested. If you spot anything falling short, please raise an issue and/or PR.
 
 ## Running locally
 
