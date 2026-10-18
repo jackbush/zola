@@ -25,8 +25,13 @@ const GAP = 44;
 // scenario (by characters) fills this share of the space between its top and
 // the button, and the others take the same size.
 const FILL = 0.8;
-// The button label is enlarged too (16px on the site).
-const BUTTON_SIZE = 18;
+// The button label is enlarged too (16px on the site), and lifted off the
+// bottom edge by the side gutter: on phones the site sits it flush on the
+// browser's toolbar, which the preview doesn't have.
+const PREVIEW_CSS = `
+  .cta { font-size: 18px; }
+  .cta__wrapper { padding-bottom: var(--gutter); }
+`;
 
 // Background is the hue opposite the theme highlight, kept very dark.
 const css = await readFile(new URL('../src/styles/global.css', import.meta.url), 'utf8');
@@ -48,24 +53,23 @@ try {
   if (served !== built) throw new Error(`${origin} is not serving this build`);
 
   browser = await chromium.launch({ channel: 'chrome' });
-  const phone = await browser.newPage({
-    viewport: PHONE,
-    deviceScaleFactor: 2,
-    colorScheme: 'dark',
-  });
-  const open = async (slug) => {
+  const newPhone = (deviceScaleFactor) => browser.newPage({ viewport: PHONE, deviceScaleFactor, colorScheme: 'dark' });
+  const open = async (phone, slug) => {
     const res = await phone.goto(`${origin}${base}scenarios/${slug}/`, { waitUntil: 'networkidle' });
     if (!res.ok()) throw new Error(`${slug}: HTTP ${res.status()}`);
-    await phone.addStyleTag({ content: `.cta { font-size: ${BUTTON_SIZE}px; }` });
+    await phone.addStyleTag({ content: PREVIEW_CSS });
     await phone.evaluate(() => document.fonts.ready);
   };
+
+  // Sizes are in CSS pixels, so fitting doesn't depend on the pixel density.
+  const phone = await newPhone(1);
   let longest = { slug: null, length: -1 };
   for (const slug of SCENARIOS) {
-    await open(slug);
+    await open(phone, slug);
     const length = await phone.evaluate(scenarioLength);
     if (length > longest.length) longest = { slug, length };
   }
-  await open(longest.slug);
+  await open(phone, longest.slug);
   let [fontSize, hi] = [8, 80];
   while (hi - fontSize > 0.1) {
     const size = (fontSize + hi) / 2;
@@ -75,35 +79,44 @@ try {
   }
   console.log(`Scenario text at ${fontSize.toFixed(1)}px, fitted to ${longest.slug}`);
 
-  const shots = [];
-  for (const slug of SCENARIOS) {
-    await open(slug);
-    await phone.evaluate(setScenarioSize, fontSize);
-    shots.push((await phone.screenshot()).toString('base64'));
-  }
+  await phone.close();
 
-  const html = `
-    <style>
-      body {
-        margin: 0;
-        width: ${IMAGE.width}px;
-        height: ${IMAGE.height}px;
-        background: ${background};
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: ${GAP}px;
-      }
-      img {
-        width: ${Math.round(PHONE.width * PHONE_SCALE)}px;
-        height: ${Math.round(PHONE.height * PHONE_SCALE)}px;
-        border-radius: 22px;
-        box-shadow: 0 6px 20px rgb(0 0 0 / 0.35), 0 1px 4px rgb(0 0 0 / 0.25);
-      }
-    </style>
-    ${shots.map((s) => `<img src="data:image/png;base64,${s}" alt="">`).join('')}
-  `;
   for (const { path, scale } of outputs) {
+    // Each phone is captured at the pixel density it's shown at in the card, so
+    // the text is rasterised at its final size instead of being scaled down.
+    const width = Math.round(PHONE.width * PHONE_SCALE * scale);
+    const shooter = await newPhone(width / PHONE.width);
+    const shots = [];
+    for (const slug of SCENARIOS) {
+      await open(shooter, slug);
+      await shooter.evaluate(setScenarioSize, fontSize);
+      shots.push(await shooter.screenshot());
+    }
+    await shooter.close();
+
+    // Shown at exactly one image pixel per screenshot pixel.
+    const [w, h] = [16, 20].map((offset) => shots[0].readUInt32BE(offset) / scale);
+    const html = `
+      <style>
+        body {
+          margin: 0;
+          width: ${IMAGE.width}px;
+          height: ${IMAGE.height}px;
+          background: ${background};
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: ${GAP}px;
+        }
+        img {
+          width: ${w}px;
+          height: ${h}px;
+          border-radius: 22px;
+          box-shadow: 0 6px 20px rgb(0 0 0 / 0.35), 0 1px 4px rgb(0 0 0 / 0.25);
+        }
+      </style>
+      ${shots.map((s) => `<img src="data:image/png;base64,${s.toString('base64')}" alt="">`).join('')}
+    `;
     const card = await browser.newPage({ viewport: IMAGE, deviceScaleFactor: scale });
     await card.setContent(html);
     await card.evaluate(() => Promise.all([...document.images].map((img) => img.decode())));
