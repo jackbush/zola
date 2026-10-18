@@ -12,16 +12,39 @@ import Layout from "../layouts/Layout.astro";
         </header>
 
         <div class="content">
+            <figure class="quote">
+                <blockquote>
+                    <p>
+                        Any person … may be able-bodied for the moment. But
+                        everyone … will at some point suffer from at least one
+                        or more chronic diseases and be disabled, temporarily or
+                        permanently.
+                    </p>
+                </blockquote>
+                <figcaption>
+                    Irving Zola, quoted in{" "}
+                    <a
+                        target="_blank"
+                        rel="noreferrer"
+                        href="https://web.archive.org/web/2005/http://www.ragged-edge-mag.com/0999/b0999ft2.html"
+                        aria-label="The Ragged Edge, September 1999 (opens in new window)"
+                    >
+                        <cite>The Ragged Edge</cite>
+                    </a>
+                    , 1999
+                </figcaption>
+            </figure>
+
             <p>
-                We're never more than temporarily able-bodied. At any given
-                moment we could be juggling tasks that take an eye, ear or
-                finger away. We could be exhausted, sick or stressed. Our need
-                for an accessible web might last a minute, a day, a month or the
-                rest of our lives. When it's our turn we'll want the web to
-                work, so let's do better.
+                Zola is named after Irving Zola, a sociologist and disability
+                rights activist who had polio as a teenager. He argued that
+                disability isn't the concern of a small minority, but something
+                nearly all of us will live with at some point, and that we
+                should design and make policy with that in mind. When it's our
+                turn we'll want the web to work, so let's do better.
             </p>
 
-            <h2>What to do with it</h2>
+            <h2 class="eyebrow--highlight">What to do with it</h2>
             <p>
                 It's not an exhaustive list of human needs, or a collection of
                 personas. Have a click through to read, come back when you're
@@ -31,15 +54,18 @@ import Layout from "../layouts/Layout.astro";
                 you think it would help someone.
             </p>
 
-            <h2>How to contribute</h2>
+            <h2 class="eyebrow--highlight">How to contribute</h2>
             <p>
-                We're open to contributions! Head to our <a
+                We're open to contributions! Head to our{" "}
+                <a
                     target="_blank"
                     rel="noreferrer"
                     href="https://github.com/jackbush/zola"
                     aria-label="GitHub repository (opens in new window)"
-                    >GitHub</a
-                > to get involved.
+                >
+                    GitHub
+                </a>{" "}
+                to get involved.
             </p>
             <ul>
                 <li>Contribute a scenario</li>
@@ -49,7 +75,7 @@ import Layout from "../layouts/Layout.astro";
                 <li>Share an idea</li>
             </ul>
 
-            <h2>Acknowledgements</h2>
+            <h2 class="eyebrow--highlight">Acknowledgements</h2>
             <p>
                 Initial scenarios adapted from{" "}
                 <a
@@ -58,9 +84,34 @@ import Layout from "../layouts/Layout.astro";
                     href="https://web.archive.org/web/20160319032044/https://the-pastry-box-project.net/anne-gibson/2014-july-31"
                     aria-label="An Alphabet of Accessibility Issues by Anne Gibson (opens in new window)"
                 >
-                    <cite>An Alphabet of Accessibility Issues</cite> by Anne Gibson</a
-                >.
+                    <cite>An Alphabet of Accessibility Issues</cite> by Anne
+                    Gibson
+                </a>
+                .
             </p>
         </div>
     </main>
 </Layout>
+
+<style>
+    .quote {
+        margin: 0 0 40px;
+
+        & blockquote {
+            margin: 0 0 16px;
+        }
+
+        & blockquote p {
+            font-size: clamp(26px, 4.5vw, 38px);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            margin: 0;
+        }
+
+        & figcaption {
+            color: var(--muted);
+            font-size: clamp(14px, 1.8vw, 16px);
+        }
+    }
+</style>

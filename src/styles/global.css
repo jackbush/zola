@@ -250,7 +250,7 @@ main {
 
 /* --- Eyebrow --- */
 .eyebrow,
-.content h2 {
+:where(.content) h2 {
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
