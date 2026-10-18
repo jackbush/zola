@@ -1,4 +1,4 @@
-![Three phone screens showing scenarios from Inclusive Design Scenarios](public/og-image.png)
+![Two phone screens from Zola: an inclusive design scenario and the about page](public/og-image.png)
 
 # About
 
