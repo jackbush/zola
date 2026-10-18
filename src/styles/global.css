@@ -315,12 +315,12 @@ main {
     }
 }
 
-/* Phones: sit on the browser's toolbar and give the space to text. One pixel
-   of background stays below the button, as iOS Safari tints its toolbar to
-   match whatever touches the bottom edge. */
+/* Phones: sit just above the browser's toolbar and give the space to text.
+   iOS Safari tints its toolbar from what fills the bottom 3px, so the button
+   stays clear of that strip and the wrapper's background shows there. */
 @media (max-width: 480px) {
     .cta__wrapper {
-        padding-bottom: 1px;
+        padding-bottom: 4px;
     }
 }
 
