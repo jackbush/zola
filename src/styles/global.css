@@ -304,10 +304,12 @@ main {
     }
 }
 
-/* Phones: sit flush on the browser's toolbar and give the space to text */
+/* Phones: sit on the browser's toolbar and give the space to text. One pixel
+   of background stays below the button, as iOS Safari tints its toolbar to
+   match whatever touches the bottom edge. */
 @media (max-width: 480px) {
     .cta__wrapper {
-        padding-bottom: 0;
+        padding-bottom: 1px;
     }
 }
 
@@ -345,7 +347,7 @@ main {
         position: relative;
         z-index: 1;
 
-        /* Flush with the toolbar on phones, so no room below: ring goes inside */
+        /* On phones there is no room below the button, so the ring goes inside */
         @media (max-width: 480px) {
             outline-color: currentColor;
             outline-offset: -7px;
