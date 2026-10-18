@@ -27,6 +27,8 @@ const MARGIN = 186;
 const GAP = 44;
 const LEFT_WIDTH = 300;
 const EDGE = 36;
+// Drops the about page a little further, so no tops of letters peek in at the bottom
+const RIGHT_NUDGE = 4;
 // On phones the site sits the button on the browser's toolbar, which the
 // preview doesn't have, so it's lifted off the bottom by the side gutter
 const PREVIEW_CSS = `.cta__wrapper { padding-bottom: var(--gutter); }`;
@@ -67,7 +69,7 @@ try {
   const heightOf = (width) => (width * PHONE.height) / PHONE.width;
   const left = { page: LEFT_PAGE, x: MARGIN, y: IMAGE.height - EDGE - heightOf(LEFT_WIDTH), width: LEFT_WIDTH };
   const rightX = MARGIN + LEFT_WIDTH + GAP;
-  const right = { page: RIGHT_PAGE, x: rightX, y: EDGE, width: IMAGE.width - MARGIN - rightX };
+  const right = { page: RIGHT_PAGE, x: rightX, y: EDGE + RIGHT_NUDGE, width: IMAGE.width - MARGIN - rightX };
 
   for (const { path, scale } of outputs) {
     const imgs = [];
