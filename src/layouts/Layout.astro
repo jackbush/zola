@@ -17,6 +17,7 @@ const pageTitle =
     title === "Inclusive Design Scenarios"
         ? title
         : `${title} — Inclusive Design Scenarios`;
+const ogImage = new URL(`${base}og-image.png`, Astro.site);
 ---
 
 <!doctype html>
@@ -27,6 +28,17 @@ const pageTitle =
         <meta name="color-scheme" content="light dark" />
         <title>{pageTitle}</title>
         <meta name="description" content={description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta
+            property="og:image:alt"
+            content="Three phone screens showing scenarios from Inclusive Design Scenarios"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="data:," />
         {
             /* Blocking script: hide until color scheme is confirmed, fall back after 200ms */

@@ -15,6 +15,7 @@ npm run dev        # astro dev (hot reload)
 npm run build      # astro build → dist/
 npm run preview    # preview production build locally
 npm run deploy     # astro build && gh-pages -d dist
+npm run og         # build, then regenerate public/og-image.png (needs Chrome installed)
 ```
 
 No test or lint commands exist in this project.

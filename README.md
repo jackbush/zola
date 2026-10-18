@@ -1,3 +1,5 @@
+![Three phone screens showing scenarios from Inclusive Design Scenarios](public/og-image.png)
+
 # About
 
 A tool for stress-testing inclusivity of designs against commonly overlooked scenarios. [Read more about it here](https://www.jackbush.github.io/zola/about/).
