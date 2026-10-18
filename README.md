@@ -6,28 +6,18 @@ Build more accessible products. Each card describes a real person's experience a
 
 ## Contributing
 
-This project needs a breadth of lived experience. Want this to be as easy as possible, with everybody welcome to get involved.
+This project needs diversity of experience and everybody is welcome. Use the [Issue Tracker](https://github.com/jackbush/zola/issues) to see what needs done, or to find a place to pitch in.
 
-### Non-technical contributions
+### Writing scenarios
 
-Trying to make creative use of the [Issues Tracker](https://github.com/jackbush/zola/issues) so people can contribute content improvements, ideas, feedback and bug reports, and get involved in discussion, without writing code or running anything locally. If you have a GitHub account (free), you can create and post here.
+Only submit a scenario if it comes from real experience — your own, someone you know, or primary research. That said, scenarios are standardised to the first person.
 
-### Technical contributions
-
-Anybody is welcome to [submit a pull request (PR)](https://github.com/jackbush/zola/pulls). Just ask that any PR references an issue and includes a clear description of what it is.
-
-## Writing scenarios
-
-Only submit a scenario if it comes from real experience — your own, someone you know, or observations from user research or testing sessions you've run. Don't fabricate. The value of this collection is that it reflects things designers would otherwise miss; invented scenarios defeat that purpose.
-
-Scenarios are written in first person.
-
-- **Human, not clinical.** Use common names for conditions (chemo brain, lazy eye, gamer's thumb). When a clinical term is necessary, explain it immediately after — "It's called chemo brain" — rather than assuming familiarity.
-- **Situation first, consequence second.** Each scenario has two parts: what is happening to this person, and how it affects their use of the web or technology. The consequence doesn't have to be stated explicitly — a behavioural detail can carry it — but the cause-and-effect chain should always be present.
-- **No generalisations.** Concrete detail is what makes a scenario stick. Not "a person with motor difficulties" but the exact situation: fell running to close car windows in the rain, served on a lightship in the North Atlantic, has a wriggling child in one arm. These details aren't decorative — they produce the immediacy that makes the reader feel the friction.
-- **No pity or inspiration.** State conditions matter-of-factly. Describe coping strategies with the same neutrality as the conditions themselves. Avoid the tragedy narrative and the inspiration narrative equally.
-- **No longer than necessary.** We want these to be memorable, so length should follow complexity. A one-sentence scenario is fine if it says everything. Three sentences are fine if there are multiple distinct implications to convey.
-- **What to avoid.** Don't moralise or state the design lesson explicitly — imply it. Don't use euphemisms or describe the person purely by their condition; most scenarios establish profession, history, or personality alongside it. Don't claim emotional states unless they're a specific, functional consequence of the condition.
+- **Human, not clinical.** Use common names for conditions. When a clinical term is necessary, explain it immediately rather than assuming familiarity.
+- **Situation first, consequence second.** What is happening to this person, then how it affects their use of technology. The consequence can be implied.
+- **No generalisations.** Concrete detail is vital, it lets the user visualise the situation.
+- **No pity or inspiration narratives.** State conditions and coping strategies neutrally. Don't moralise.
+- **No longer than necessary.** We want these to be memorable, so length should follow complexity.
+- **What to avoid.** Don't state the design lesson explicitly, imply it. Don't use euphemisms. Don't claim emotional states unless they're a specific, functional consequence of the condition.
 
 ## Accessibility
 
