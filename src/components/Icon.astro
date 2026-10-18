@@ -1,0 +1,13 @@
+---
+// Decorative Phosphor icon: pass an `?raw` import as `svg`. Hidden from
+// assistive tech, so the surrounding text must carry the meaning.
+interface Props {
+    svg: string;
+    class: string;
+}
+
+const { svg, class: className } = Astro.props;
+const html = svg.replace("<svg ", `<svg aria-hidden="true" focusable="false" class="${className}" `);
+---
+
+<Fragment set:html={html} />

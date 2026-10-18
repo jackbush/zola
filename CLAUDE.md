@@ -31,12 +31,14 @@ No test or lint commands exist in this project.
 
 **Routing**:
 - `src/pages/index.astro` — injects all slugs at build time, client-side JS redirects to a random `/scenarios/[slug]`
-- `src/pages/scenarios/[slug].astro` — `getStaticPaths` from the collection; each page has "Give me another one" which filters out the current slug then navigates to a random other
-- `src/pages/about.astro`, `src/pages/404.astro`
+- `src/pages/scenarios/[slug].astro` — `getStaticPaths` from the collection; each page has a "Show another scenario" button which filters out the current slug then navigates to a random other
+- `src/pages/all.astro` (every scenario, alphabetical), `src/pages/about.astro`, `src/pages/404.astro`
 
-**Layout**: `src/layouts/Layout.astro` — HTML shell, nav, Google Fonts (Space Grotesk), favicon. All pages import this.
+**Layout**: `src/layouts/Layout.astro` — HTML shell, nav (wordmark is "zola" in braille dots, drawn as SVG and hidden from screen readers, then the word), Google Fonts (Space Grotesk), favicon. All pages import this.
 
-**Styles**: `src/styles/global.scss` (Swiss/bold redesign, mobile-first, `clamp()` typography). `src/styles/normalize.scss` is the CSS reset. Both imported by Layout.
+**Components**: `src/components/Icon.astro` renders a decorative Phosphor icon (`@phosphor-icons/core`, bold weight, `?raw` import). `src/components/NewTabLink.astro` — use for every `target="_blank"` link; adds the visible icon and the "(opens in new tab)" text for screen readers.
+
+**Styles**: `src/styles/global.css` (Swiss/bold, mobile-first, `clamp()` typography with `rem` bounds so the browser's text size setting applies), imported by Layout.
 
 **Deployment**: GitHub Pages at `https://jackbush.github.io/zola/` — `astro.config.mjs` sets `site` and `base`. Always use `import.meta.env.BASE_URL` for internal links (not hardcoded paths).
 
@@ -47,6 +49,18 @@ No test or lint commands exist in this project.
 - **Scenario text styling**: the `<article>` on the scenario page uses `:global(p)` to style the rendered Markdown paragraph at display size.
 - **No letter/index references** — the collection was originally A–Z but is now open-ended. Slugs are the only identifiers.
 
+## Accessibility conventions
+
+Decisions from the AAA audit; keep them when changing the design.
+
+- **Pink is never a text colour** (1.7:1 on light). Use it as a block behind dark text (`.eyebrow--highlight`) or as an underline via `--link-line`.
+- **Text is at least 16px** (`1rem`); sizes are in `rem` so browser text settings apply.
+- **Targets are at least 44px**, padded out with matching negative margins so the layout doesn't move.
+- **Dark-mode text is #e0e0e0, not white**, to avoid halation; `prefers-contrast: more` gets #f0f0f0 and turns muted and pink text to full strength.
+- **The nav must fit 200% text plus WCAG 1.4.12 spacing.** A container query swaps the wordmark for a house "Home" link when it doesn't; re-measure its `em` threshold if nav content changes.
+- **Under 480px tall**, the nav and CTA scroll with the page instead of being fixed.
+- **Icons are decorative** (`Icon.astro`, `aria-hidden`); the visible text must carry the meaning and match the accessible name.
+
 ## Writing scenarios
 
 Follow the style guide in the `# Writing scenarios` section of README.md. Additionally:
@@ -56,3 +70,5 @@ Follow the style guide in the `# Writing scenarios` section of README.md. Additi
 **When research is thin.** If strong first-person accounts can't be found, flag this before drafting rather than falling back on assumption.
 
 **Grounding vs. fabrication.** Use research to establish the condition and its real effects. You can invent the person — their job, backstory, situation — but don't invent the experience itself. Derive the condition's impact from what people actually describe.
+
+**Plain language (WCAG AAA).** Spell out abbreviations on first use (3.1.4) and aim for a reading level of US grade 9 or below (3.1.5). Existing scenarios still to fix: ME, MD, CVV, RSI and BSL are unexpanded, and six scenarios read above grade 10.

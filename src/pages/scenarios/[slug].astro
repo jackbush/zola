@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import shuffle from '@phosphor-icons/core/assets/bold/shuffle-bold.svg?raw';
 
 export async function getStaticPaths() {
   const scenarios = await getCollection('scenarios');
@@ -19,21 +21,18 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 
 <Layout title={scenario.data.title}>
-  <main>
-    <header class="header header--plain">
-      <h1 class="header__title">Inclusive Design Scenarios</h1>
-    </header>
+  <header class="header header--plain">
+    {/* The site name is the same on every scenario, so the scenario is the h1 */}
+    <p class="header__title">Inclusive Design Scenarios</p>
+  </header>
 
-    <article aria-labelledby="scenario-title">
-      <h2 class="eyebrow eyebrow--highlight" id="scenario-title">{scenario.data.title}</h2>
-      <Content />
-    </article>
-  </main>
+  <article aria-labelledby="scenario-title">
+    <h1 class="eyebrow eyebrow--highlight" id="scenario-title">{scenario.data.title}</h1>
+    <Content />
+  </article>
 
   <div class="cta__wrapper">
-    <button class="cta" id="random-btn" type="button" aria-label="Show a different scenario">
-      Give me another one
-    </button>
+    <button class="cta" id="random-btn" type="button"><Icon svg={shuffle} class="cta__icon" />Show another scenario</button>
   </div>
 </Layout>
 
@@ -46,16 +45,8 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 </script>
 
 <style>
-  .scenario__content {
-    font-size: clamp(22px, 3.5vw, 32px);
-    line-height: 1.55;
-    font-weight: 400;
-    margin: 0;
-    letter-spacing: -0.01em;
-  }
-
   article :global(p) {
-    font-size: clamp(22px, 3.5vw, 32px);
+    font-size: clamp(1.375rem, 3.5vw, 2rem);
     line-height: 1.55;
     font-weight: 400;
     margin: 0;

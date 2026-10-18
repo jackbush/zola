@@ -2,7 +2,7 @@
 
 # About
 
-A tool for stress-testing inclusivity of designs against commonly overlooked scenarios. [Read more about it here](https://www.jackbush.github.io/zola/about/).
+Build more accessible products. Each card describes a real person's experience and needs, which your design should accommodate. [Read more about it here](https://www.jackbush.github.io/zola/about/).
 
 # Contributing
 

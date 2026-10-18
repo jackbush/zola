@@ -21,28 +21,34 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
   title="All scenarios"
   description="Every scenario in the collection, listed alphabetically."
 >
-  <main>
-    <header class="header header--plain">
-      <h1 class="header__title">All scenarios</h1>
-    </header>
+  <header class="header header--plain">
+    <h1 class="header__title">All scenarios</h1>
+  </header>
 
-    <div class="content">
-      {rendered.map(({ scenario, Content }, i) => (
-        <>
-          {i > 0 && <hr />}
-          <h2>
-            <a href={`${base}scenarios/${scenario.slug}`}>
-              {scenario.data.title}
-            </a>
-          </h2>
-          <Content />
-        </>
-      ))}
-    </div>
-  </main>
+  <div class="content">
+    {rendered.map(({ scenario, Content }, i) => (
+      <>
+        {i > 0 && <hr />}
+        <h2>
+          <a href={`${base}scenarios/${scenario.slug}`}>
+            {scenario.data.title}
+          </a>
+        </h2>
+        <Content />
+      </>
+    ))}
+  </div>
 </Layout>
 
 <style>
+  /* Pad the heading links up to a 44px target without moving them */
+  h2 a {
+    display: inline-block;
+    min-width: 44px;
+    padding-block: 14px;
+    margin-block: -14px;
+  }
+
   hr {
     border: none;
     border-top: 2px solid var(--muted);

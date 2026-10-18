@@ -1,5 +1,7 @@
 ---
 import "../styles/global.css";
+import house from "@phosphor-icons/core/assets/bold/house-bold.svg?raw";
+import Icon from "../components/Icon.astro";
 
 interface Props {
     title: string;
@@ -8,16 +10,26 @@ interface Props {
 
 const {
     title,
-    description = "A tool for stress-testing inclusivity of designs against commonly overlooked scenarios.",
+    description = "Build more accessible products. Each card describes a real person's experience and needs, which your design should accommodate.",
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
 const pathname = Astro.url.pathname.replace(/\/?$/, "/");
+// Home is a random scenario, so from a scenario the compact nav drops it
+const onScenario = pathname.startsWith(`${base}scenarios/`);
 const pageTitle =
-    title === "Inclusive Design Scenarios"
-        ? title
-        : `${title} — Inclusive Design Scenarios`;
+    title === "Zola: Inclusive Design Scenarios" ? title : `${title} | Zola`;
 const ogImage = new URL(`${base}og-image.png`, Astro.site);
+
+// "zola" in braille, raised dots only (the system braille font draws the
+// empty positions too). Dots 1–3 run down the left column, 4–6 the right.
+const BRAILLE = [[1, 3, 5, 6], [1, 3, 5], [1, 2, 3], [1]];
+const brailleDots = BRAILLE.flatMap((dots, cell) =>
+    dots.map((d) => ({
+        cx: cell * 18 + 3 + (d > 3 ? 6 : 0),
+        cy: 3 + ((d - 1) % 3) * 8,
+    })),
+);
 ---
 
 <!doctype html>
@@ -36,37 +48,10 @@ const ogImage = new URL(`${base}og-image.png`, Astro.site);
         <meta property="og:image:height" content="630" />
         <meta
             property="og:image:alt"
-            content="Three phone screens showing scenarios from Inclusive Design Scenarios"
+            content="Three phone screens showing inclusive design scenarios from Zola"
         />
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="data:," />
-        {
-            /* Blocking script: hide until color scheme is confirmed, fall back after 200ms */
-        }
-        <script is:inline>
-            (function () {
-                var d = document.documentElement;
-                d.style.visibility = "hidden";
-                var done = function () {
-                    d.style.visibility = "";
-                };
-                // matchMedia is synchronous — resolve immediately if available
-                if (window.matchMedia) {
-                    done();
-                } else {
-                    // Rare fallback: reveal after a short timeout
-                    var t = setTimeout(done, 200);
-                    window.addEventListener(
-                        "DOMContentLoaded",
-                        function () {
-                            clearTimeout(t);
-                            done();
-                        },
-                        { once: true },
-                    );
-                }
-            })();
-        </script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -75,28 +60,51 @@ const ogImage = new URL(`${base}og-image.png`, Astro.site);
         />
     </head>
     <body>
-        <a href="#main-content" class="skip-link">Skip to content</a>
-        <nav class="nav" aria-label="Site navigation">
-            <a href={base} class="nav__brand">Zola</a>
+        <a href="#main-content" class="skip-link">
+            Skip to content
+        </a>
+        <nav class="nav" aria-label="Site">
+            <a href={base} class="nav__brand">
+                <svg
+                    class="nav__braille"
+                    viewBox={`0 0 ${BRAILLE.length * 18 - 10} 22`}
+                    aria-hidden="true"
+                    focusable="false"
+                >
+                    {brailleDots.map((dot) => (
+                        <circle {...dot} r="2.6" />
+                    ))}
+                </svg>
+                Zola
+            </a>
+            {!onScenario && (
+                <a href={base} class="nav__home" aria-label="Home">
+                    <Icon svg={house} class="nav__home-icon" />
+                </a>
+            )}
             <div class="nav__group">
                 <a
                     href={`${base}all`}
                     class={`nav__link${pathname === `${base}all/` ? " nav__link--active" : ""}`}
-                    aria-current={pathname === `${base}all/`
-                        ? "page"
-                        : undefined}>List</a
+                    aria-current={
+                        pathname === `${base}all/` ? "page" : undefined
+                    }
                 >
+                    List
+                </a>
                 <a
                     href={`${base}about`}
                     class={`nav__link${pathname === `${base}about/` ? " nav__link--active" : ""}`}
-                    aria-current={pathname === `${base}about/`
-                        ? "page"
-                        : undefined}>About</a
+                    aria-current={
+                        pathname === `${base}about/` ? "page" : undefined
+                    }
                 >
+                    About
+                </a>
             </div>
         </nav>
-        <div class="container" id="main-content" tabindex="-1">
+        <main class="container" id="main-content" tabindex="-1">
             <slot />
-        </div>
+        </main>
     </body>
 </html>

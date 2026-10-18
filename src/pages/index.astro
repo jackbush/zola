@@ -1,25 +1,31 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
+// For the page background, so dark mode doesn't flash white before redirecting
+import "../styles/global.css";
 
-const scenarios = await getCollection('scenarios');
+const scenarios = await getCollection("scenarios");
 const slugs = scenarios.map((s) => s.slug);
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
 ---
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inclusive Design Scenarios</title>
-    <noscript>
-      <meta http-equiv="refresh" content={`0;url=${base}scenarios/screen-reader`} />
-    </noscript>
-  </head>
-  <body>
-    <script define:vars={{ slugs, base }}>
-      const slug = slugs[Math.floor(Math.random() * slugs.length)];
-      window.location.replace(base + 'scenarios/' + slug);
-    </script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="light dark" />
+        <title>Zola: Inclusive Design Scenarios</title>
+        <noscript>
+            <meta
+                http-equiv="refresh"
+                content={`0;url=${base}scenarios/screen-reader`}
+            />
+        </noscript>
+    </head>
+    <body>
+        <script define:vars={{ slugs, base }}>
+            const slug = slugs[Math.floor(Math.random() * slugs.length)];
+            window.location.replace(base + "scenarios/" + slug);
+        </script>
+    </body>
 </html>

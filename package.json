@@ -2,7 +2,7 @@
   "name": "zola",
   "version": "2.0.0",
   "private": true,
-  "description": "A tool for stress-testing inclusivity of designs against commonly overlooked scenarios.",
+  "description": "Build more accessible products. Each card describes a real person's experience and needs, which your design should accommodate.",
   "author": "Jack Bush",
   "scripts": {
     "dev": "astro dev",
@@ -12,6 +12,7 @@
     "og": "node scripts/og-image.mjs"
   },
   "dependencies": {
+    "@phosphor-icons/core": "^2.1.1",
     "astro": "^5.0.0"
   },
   "devDependencies": {

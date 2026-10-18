@@ -1,0 +1,16 @@
+---
+import newTab from "@phosphor-icons/core/assets/bold/arrow-square-out-bold.svg?raw";
+import Icon from "./Icon.astro";
+
+interface Props {
+    href: string;
+}
+
+const { href } = Astro.props;
+// Trimmed, so no space precedes the icon. Chrome still breaks before an
+// inline SVG unless a word joiner sits with it inside a nowrap span.
+const label = (await Astro.slots.render("default")).trim();
+const wordJoiner = "⁠";
+---
+
+<a href={href} target="_blank" rel="noreferrer"><Fragment set:html={label} /><span class="visually-hidden"> (opens in new tab)</span><span class="new-tab">{wordJoiner}<Icon svg={newTab} class="new-tab__icon" /></span></a>
