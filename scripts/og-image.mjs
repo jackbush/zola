@@ -7,7 +7,7 @@ import { createServer } from 'node:net';
 import { build, preview } from 'astro';
 import { chromium } from 'playwright-core';
 
-const SCENARIOS = ['undiagnosed-astigmatism', 'essential-tremor', 'tinnitus'];
+const SCENARIOS = ['fractured-fingers', 'tinnitus', 'no-documents'];
 const OUT = new URL('../public/og-image.png', import.meta.url);
 
 const IMAGE = { width: 1200, height: 630 };
