@@ -1,19 +1,32 @@
 // Regenerates public/og-image.png: three scenario pages captured at phone
 // size in dark mode, centred in a 3:2 crop of the 1200×630 social preview.
 // Run with `npm run og` (builds the site first). Uses the installed Chrome.
+// `npm run og -- --cover <path>` also writes a 2× copy to <path>, for sites
+// that show it larger than a social preview.
 
 import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:net';
+import { resolve } from 'node:path';
+import { parseArgs } from 'node:util';
 import { build, preview } from 'astro';
 import { chromium } from 'playwright-core';
 
 const SCENARIOS = ['fractured-fingers', 'tinnitus', 'no-documents'];
 const OUT = new URL('../public/og-image.png', import.meta.url);
+const { cover } = parseArgs({ options: { cover: { type: 'string' } } }).values;
+const outputs = [{ path: OUT.pathname, scale: 1 }];
+if (cover) outputs.push({ path: resolve(process.env.INIT_CWD ?? '.', cover), scale: 2 });
 
 const IMAGE = { width: 1200, height: 630 };
 const PHONE = { width: 360, height: 780 };
 const PHONE_SCALE = 0.685; // phone height ≈ 85% of the image height
 const GAP = 44;
+// The scenario text is enlarged so it reads at preview size: until the longest
+// scenario (by characters) fills this share of the space between its top and
+// the button, and the others take the same size.
+const FILL = 0.8;
+// The button label is enlarged too (16px on the site).
+const BUTTON_SIZE = 18;
 
 // Background is the hue opposite the theme highlight, kept very dark.
 const css = await readFile(new URL('../src/styles/global.css', import.meta.url), 'utf8');
@@ -40,16 +53,36 @@ try {
     deviceScaleFactor: 2,
     colorScheme: 'dark',
   });
-  const shots = [];
-  for (const slug of SCENARIOS) {
+  const open = async (slug) => {
     const res = await phone.goto(`${origin}${base}scenarios/${slug}/`, { waitUntil: 'networkidle' });
     if (!res.ok()) throw new Error(`${slug}: HTTP ${res.status()}`);
+    await phone.addStyleTag({ content: `.cta { font-size: ${BUTTON_SIZE}px; }` });
     await phone.evaluate(() => document.fonts.ready);
+  };
+  let longest = { slug: null, length: -1 };
+  for (const slug of SCENARIOS) {
+    await open(slug);
+    const length = await phone.evaluate(scenarioLength);
+    if (length > longest.length) longest = { slug, length };
+  }
+  await open(longest.slug);
+  let [fontSize, hi] = [8, 80];
+  while (hi - fontSize > 0.1) {
+    const size = (fontSize + hi) / 2;
+    await phone.evaluate(setScenarioSize, size);
+    if ((await phone.evaluate(scenarioFill)) > FILL) hi = size;
+    else fontSize = size;
+  }
+  console.log(`Scenario text at ${fontSize.toFixed(1)}px, fitted to ${longest.slug}`);
+
+  const shots = [];
+  for (const slug of SCENARIOS) {
+    await open(slug);
+    await phone.evaluate(setScenarioSize, fontSize);
     shots.push((await phone.screenshot()).toString('base64'));
   }
 
-  const card = await browser.newPage({ viewport: IMAGE });
-  await card.setContent(`
+  const html = `
     <style>
       body {
         margin: 0;
@@ -69,13 +102,32 @@ try {
       }
     </style>
     ${shots.map((s) => `<img src="data:image/png;base64,${s}" alt="">`).join('')}
-  `);
-  await card.evaluate(() => Promise.all([...document.images].map((img) => img.decode())));
-  await card.screenshot({ path: OUT.pathname });
-  console.log(`Wrote ${OUT.pathname} (background ${background} from --pink ${pink})`);
+  `;
+  for (const { path, scale } of outputs) {
+    const card = await browser.newPage({ viewport: IMAGE, deviceScaleFactor: scale });
+    await card.setContent(html);
+    await card.evaluate(() => Promise.all([...document.images].map((img) => img.decode())));
+    await card.screenshot({ path });
+    console.log(`Wrote ${path} at ${scale}× (background ${background} from --pink ${pink})`);
+  }
 } finally {
   await browser?.close();
   await server.stop();
+}
+
+// These run in the page, on the scenario's paragraphs.
+function scenarioLength() {
+  return [...document.querySelectorAll('article p')].reduce((n, p) => n + p.textContent.trim().length, 0);
+}
+
+function setScenarioSize(size) {
+  document.querySelectorAll('article p').forEach((p) => (p.style.fontSize = `${size}px`));
+}
+
+// How far the article ends between its top (0) and the button's top (1).
+function scenarioFill() {
+  const article = document.querySelector('article').getBoundingClientRect();
+  return (article.bottom - article.top) / (document.querySelector('.cta').getBoundingClientRect().top - article.top);
 }
 
 function hueOf(hex) {

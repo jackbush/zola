@@ -16,7 +16,10 @@ npm run build      # astro build → dist/
 npm run preview    # preview production build locally
 npm run deploy     # astro build && gh-pages -d dist
 npm run og         # build, then regenerate public/og-image.png (needs Chrome installed)
+                   # add `-- --cover <path>` to also write a 2× copy there
 ```
+
+A post-commit hook (`.githooks/post-commit`; enable with `git config core.hooksPath .githooks`) runs `npm run og` after any commit touching `src/` or the script, writing the 2× cover into `../jackbush.github.io` when that checkout exists. The regenerated images are left uncommitted.
 
 No test or lint commands exist in this project.
 

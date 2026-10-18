@@ -1,0 +1,12 @@
+#!/bin/sh
+# Regenerates the social preview, and the 2x cover on jackbush.github.io when
+# that repo sits beside this one, after a commit that touches the site or the
+# script. The new images are left uncommitted.
+git diff-tree --no-commit-id --name-only -r HEAD | grep -qE '^(src/|scripts/og-image\.mjs$)' || exit 0
+
+cover="../jackbush.github.io/src/assets/covers/zola.png"
+if [ -d "$(dirname "$cover")" ]; then
+  npm run og -- --cover "$cover"
+else
+  npm run og
+fi
