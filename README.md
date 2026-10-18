@@ -10,7 +10,7 @@ This project needs diversity of experience and everybody is welcome. Use the [Is
 
 ### Writing scenarios
 
-Only submit a scenario if it comes from real experience — your own, someone you know, or primary research. That said, scenarios are standardised to the first person.
+Only submit a scenario if it comes from real experience: can be your own, someone you know, or primary research.
 
 #### Do
 - **Human, not clinical.** Use common names for conditions. When a clinical term is necessary, explain it.
@@ -18,6 +18,7 @@ Only submit a scenario if it comes from real experience — your own, someone yo
 - **No generalisations.** Concrete detail is vital, it lets the user visualise the situation.
 - **No pity or inspiration narratives.** State conditions and coping strategies neutrally. Don't moralise.
 - **No longer than necessary.** We want these to be memorable, so length should follow complexity.
+- **Use the first person.** To keep things evenly weighted and consistent.
 
 #### Don't 
 - Don't state the design lesson explicitly, imply it from situation and consequence.
