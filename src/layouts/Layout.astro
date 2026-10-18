@@ -22,14 +22,22 @@ const pageTitle =
 const ogImage = new URL(`${base}og-image.png`, Astro.site);
 
 // "zola" in braille, raised dots only (the system braille font draws the
-// empty positions too). Dots 1–3 run down the left column, 4–6 the right.
+// empty positions too), knocked out of a rounded box (drawn in CSS). Dots 1–3 run down the
+// left column, 4–6 the right; every cell keeps both columns so "a" (dot 1)
+// reads as a left-column dot.
 const BRAILLE = [[1, 3, 5, 6], [1, 3, 5], [1, 2, 3], [1]];
+const DOT = 2.6;
+const PAD = 3.5;
 const brailleDots = BRAILLE.flatMap((dots, cell) =>
     dots.map((d) => ({
-        cx: cell * 18 + 3 + (d > 3 ? 6 : 0),
-        cy: 3 + ((d - 1) % 3) * 8,
+        cx: PAD + DOT + cell * 18 + (d > 3 ? 6 : 0),
+        cy: PAD + DOT + ((d - 1) % 3) * 8,
     })),
 );
+const brailleBox = {
+    width: 2 * (PAD + DOT) + (BRAILLE.length - 1) * 18 + 6,
+    height: 2 * (PAD + DOT) + 16,
+};
 ---
 
 <!doctype html>
@@ -67,15 +75,15 @@ const brailleDots = BRAILLE.flatMap((dots, cell) =>
             <a href={base} class="nav__brand">
                 <svg
                     class="nav__braille"
-                    viewBox={`0 0 ${BRAILLE.length * 18 - 10} 22`}
+                    viewBox={`0 0 ${brailleBox.width} ${brailleBox.height}`}
+                    style={`--dot: ${DOT / brailleBox.height}`}
                     aria-hidden="true"
                     focusable="false"
                 >
                     {brailleDots.map((dot) => (
-                        <circle {...dot} r="2.6" />
+                        <circle {...dot} r={DOT} />
                     ))}
-                </svg>
-                Zola
+                </svg>Zola
             </a>
             {!onScenario && (
                 <a href={base} class="nav__home" aria-label="Home">

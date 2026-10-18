@@ -132,10 +132,8 @@ body {
     color: var(--fg);
     text-decoration: none;
     line-height: 1;
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-    height: var(--nav-height);
+    /* Inline, not flex, so the box sits on the text's baseline */
+    padding-block: calc((var(--nav-height) - 1lh) / 2);
 
     @media (hover: hover) {
         &:hover {
@@ -147,11 +145,24 @@ body {
 }
 
 .nav__braille {
-    height: 0.95em;
-    fill: currentColor;
+    /* The dots' box is as tall as the capital Z; the drawn box outsets it by
+       1px all round, and its corners are 2px rounder than the dots' radius */
+    height: calc(1cap + 2px);
+    padding: 1px;
+    vertical-align: -1px;
+    margin-inline-end: 0.4em;
+    border-radius: calc(var(--dot) * 1cap + 2px);
+    background: currentColor;
+    fill: var(--bg);
+
+    @media (forced-colors: active) {
+        forced-color-adjust: none;
+        background: CanvasText;
+        fill: Canvas;
+    }
 }
 
-/* When enlarged text no longer fits the wordmark (13em of nav text, including
+/* When enlarged text no longer fits the wordmark (12em of nav text, including
    WCAG 1.4.12 text spacing), a house icon replaces it. Two links rather than
    one restyled, so each has a name that matches what's shown. */
 .nav__home {
@@ -168,7 +179,7 @@ body {
     height: 1.5rem;
 }
 
-@container nav (max-width: 13.5em) {
+@container nav (max-width: 12.5em) {
     .nav__brand {
         display: none;
     }
