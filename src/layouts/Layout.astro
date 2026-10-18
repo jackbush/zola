@@ -46,6 +46,17 @@ const brailleBox = {
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="color-scheme" content="light dark" />
+        <!-- Browser toolbar colours: --bg in global.css -->
+        <meta
+            name="theme-color"
+            content="#fafafa"
+            media="(prefers-color-scheme: light)"
+        />
+        <meta
+            name="theme-color"
+            content="#111111"
+            media="(prefers-color-scheme: dark)"
+        />
         <title>{pageTitle}</title>
         <meta name="description" content={description} />
         <meta property="og:type" content="website" />
