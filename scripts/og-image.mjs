@@ -1,6 +1,7 @@
 // Regenerates public/og-image.png: two pages captured at phone size in dark
 // mode on the 1200×630 social preview. A scenario on the left runs off the top,
-// cropped below its nav; the about page on the right runs off the bottom. Run with `npm run og` (builds the site first). Uses the installed Chrome.
+// cropped below its nav; the about page on the right runs off the bottom. Run
+// with `npm run og` (builds the site first). Uses the installed Chrome.
 // `npm run og -- --cover <path>` also writes a 2× copy to <path>, for sites
 // that show it larger than a social preview.
 
@@ -20,15 +21,17 @@ if (cover) outputs.push({ path: resolve(process.env.INIT_CWD ?? '.', cover), sca
 
 const IMAGE = { width: 1200, height: 630 };
 const PHONE = { width: 360, height: 780 };
-// The phones fill the space between these side margins, GAP apart; the right
-// one takes whatever width the left leaves. The left one's bottom and the right
-// one's top are EDGE in from the frame.
+// The phones fill the space between these side margins, GAP apart. The left
+// one's bottom and the right one's top are EDGE in from the frame.
 const MARGIN = 186;
 const GAP = 44;
-const LEFT_WIDTH = 300;
-const EDGE = 36;
-// Drops the about page a little further, so no tops of letters peek in at the bottom
-const RIGHT_NUDGE = 4;
+const EDGE = 54;
+// CSS px of the scenario hidden above the frame (its nav), and of the about
+// page shown above the frame's bottom edge, which falls between lines of text.
+// The right phone is sized to fit RIGHT_SHOWN between EDGE and the bottom; the
+// left takes the width that leaves.
+const LEFT_CROP = 67;
+const RIGHT_SHOWN = 465;
 // On phones the site sits the button on the browser's toolbar, which the
 // preview doesn't have, so it's lifted off the bottom by the side gutter
 const PREVIEW_CSS = `.cta__wrapper { padding-bottom: var(--gutter); }`;
@@ -55,8 +58,8 @@ try {
   browser = await chromium.launch({ channel: 'chrome' });
   // Each phone is captured at the pixel density it's shown at in the card, so
   // the text is rasterised at its final size instead of being scaled down.
-  const capture = async (path, width) => {
-    const page = await browser.newPage({ viewport: PHONE, deviceScaleFactor: width / PHONE.width, colorScheme: 'dark' });
+  const capture = async (path, width, viewport) => {
+    const page = await browser.newPage({ viewport, deviceScaleFactor: width / viewport.width, colorScheme: 'dark' });
     const res = await page.goto(`${origin}${base}${path}`, { waitUntil: 'networkidle' });
     if (!res.ok()) throw new Error(`${path}: HTTP ${res.status()}`);
     await page.addStyleTag({ content: PREVIEW_CSS });
@@ -66,17 +69,20 @@ try {
     return shot;
   };
 
-  const heightOf = (width) => (width * PHONE.height) / PHONE.width;
-  const left = { page: LEFT_PAGE, x: MARGIN, y: IMAGE.height - EDGE - heightOf(LEFT_WIDTH), width: LEFT_WIDTH };
-  const rightX = MARGIN + LEFT_WIDTH + GAP;
-  const right = { page: RIGHT_PAGE, x: rightX, y: EDGE + RIGHT_NUDGE, width: IMAGE.width - MARGIN - rightX };
+  const rightWidth = (PHONE.width * (IMAGE.height - EDGE)) / RIGHT_SHOWN;
+  const leftWidth = IMAGE.width - 2 * MARGIN - GAP - rightWidth;
+  const leftZoom = leftWidth / PHONE.width;
+  // The scenario's phone is cut short so its button sits closer to the text
+  const leftPhone = { width: PHONE.width, height: Math.round((IMAGE.height - EDGE) / leftZoom + LEFT_CROP) };
+  const left = { page: LEFT_PAGE, phone: leftPhone, x: MARGIN, y: -LEFT_CROP * leftZoom, width: leftWidth };
+  const right = { page: RIGHT_PAGE, phone: PHONE, x: MARGIN + leftWidth + GAP, y: EDGE, width: rightWidth };
 
   for (const { path, scale } of outputs) {
     const imgs = [];
-    for (const { page, x, y, width } of [left, right]) {
-      const shot = await capture(page, Math.round(width * scale));
+    for (const { page, phone, x, y, width } of [left, right]) {
+      const shot = await capture(page, Math.round(width * scale), phone);
       imgs.push(
-        `<img style="left:${x}px; top:${y}px; width:${width}px; height:${heightOf(width)}px"
+        `<img style="left:${x}px; top:${y}px; width:${width}px; height:${(phone.height * width) / phone.width}px"
           src="data:image/png;base64,${shot.toString('base64')}" alt="">`,
       );
     }
